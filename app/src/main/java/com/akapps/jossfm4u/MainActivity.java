@@ -21,16 +21,9 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
 		initialize(_savedInstanceState);
-		new Timer().schedule(new TimerTask(){
-			public void run() {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						//startActivity(new Intent(MainActivity.this, HomeActivity.class));
-						net.startRequestNetwork(RequestNetworkController.POST, "http://clients3.google.com/generate_204", "", _net_request_listener);
-					}
-				});
-			}
-		}, 2000);
+
+		net.startRequestNetwork(RequestNetworkController.POST, "https://google.com", "", _net_request_listener);
+
 	}
 
 	private void initialize(Bundle _savedInstanceState) {

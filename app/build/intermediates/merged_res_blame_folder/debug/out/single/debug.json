@@ -1,9 +1,5 @@
 [
     {
-        "merged": "com.akapps.jossfm4u.app-merged_res-18:/layout_layout_home.xml.flat",
-        "source": "com.akapps.jossfm4u.app-main-20:/layout/layout_home.xml"
-    },
-    {
         "merged": "C:\\Users\\AK\\.gradle\\daemon\\7.3.3\\com.akapps.jossfm4u.app-merged_res-18:\\layout_layout_home.xml.flat",
         "source": "C:\\Users\\AK\\.gradle\\daemon\\7.3.3\\com.akapps.jossfm4u.app-main-20:\\layout\\layout_home.xml"
     },

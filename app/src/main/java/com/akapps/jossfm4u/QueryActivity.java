@@ -81,11 +81,7 @@ public class QueryActivity extends AppCompatActivity {
 		linear2 = (LinearLayout) findViewById(R.id.linear2);
 		textview1 = (TextView) findViewById(R.id.textview1);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
-		linear4 = (LinearLayout) findViewById(R.id.linear4);
-		linear5 = (LinearLayout) findViewById(R.id.linear5);
-		linear6 = (LinearLayout) findViewById(R.id.linear6);
-		linear7 = (LinearLayout) findViewById(R.id.linear7);
-		linear8 = (LinearLayout) findViewById(R.id.linear8);
+
 		spinner1 = (Spinner) findViewById(R.id.spinner1);
 		imageview3 = (ImageView) findViewById(R.id.imageview3);
 		name = (EditText) findViewById(R.id.name);
@@ -183,7 +179,6 @@ public class QueryActivity extends AppCompatActivity {
 		options.add("Business Contact");
 		options.add("Others");
 		spinner1.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, options));
-		textview1.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/captcha.ttf"), 1);
 	}
 	
 	@Override

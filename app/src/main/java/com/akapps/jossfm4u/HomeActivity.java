@@ -1,34 +1,54 @@
 package com.akapps.jossfm4u;
 
-import android.os.*;
-import android.view.*;
-import android.widget.*;
-import android.util.*;
-import android.view.animation.*;
-import java.util.*;
-
-import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
-import java.util.HashMap;
-import android.widget.ScrollView;
-import android.widget.LinearLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.content.Intent;
 import android.net.Uri;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ChildEventListener;
-import android.view.View;
-import com.bumptech.glide.Glide;
-import android.graphics.Typeface;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import io.agora.rtc.Constants;
+import io.agora.rtc.IRtcEngineEventHandler;
+import io.agora.rtc.RtcEngine;
+import io.agora.rtc.models.ClientRoleOptions;
 
 public class HomeActivity extends AppCompatActivity {
-	
+
+
+	private String appId = "a322bad7ba27413a89efc583babc9977";
+
+	public RtcEngine mRtcEngine;
+
+	private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+		@Override
+		public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+			super.onJoinChannelSuccess(channel, uid, elapsed);
+			isCon = true;
+			connected();
+
+		}
+	};
+
 	private FirebaseDatabase _firebase = FirebaseDatabase.getInstance();
 	
 	private String img1 = "";
@@ -37,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
 	private String img4 = "";
 	
 	private ArrayList<HashMap<String, Object>> lst = new ArrayList<>();
+
+	private boolean isCon;
 	
 	private ScrollView vscroll1;
 	private LinearLayout linearm;
@@ -79,7 +101,9 @@ public class HomeActivity extends AppCompatActivity {
 	
 	private void initialize(Bundle _savedInstanceState) {
 
-		status = (TextView) findViewById(R.id.status);
+
+
+		status = (TextView) findViewById(R.id.textView3);
 		program = (TextView) findViewById(R.id.program);
 		updates = (TextView) findViewById(R.id.updates);
 
@@ -88,10 +112,26 @@ public class HomeActivity extends AppCompatActivity {
 		upcoming = (ImageView) findViewById(R.id.eventsIv);
 		query = (ImageView) findViewById(R.id.queryIv);
 		about = (ImageView) findViewById(R.id.aboutIv);
-
+		play_pause = findViewById(R.id.play_pause);
 		linear1 = findViewById(R.id.linear1);
 
 		net = new RequestNetwork(this);
+
+		play_pause.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if(isCon){
+					status.setText("Disconnected");
+					mRtcEngine.leaveChannel();
+					play_pause.setImageResource(R.drawable.ic_play_arrow_black);
+					isCon = false;
+				} else {
+					mRtcEngine.joinChannel(null, "ak", "", 0);
+					play_pause.setEnabled(false);
+
+				}
+			}
+		});
 		
 		upcoming.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -200,8 +240,42 @@ public class HomeActivity extends AppCompatActivity {
 			public void onCancelled(DatabaseError _databaseError) {
 			}
 		});
+
+		startRadio();
 	}
-	
+
+	private void startRadio() {
+
+		try {
+			mRtcEngine = RtcEngine.create(getBaseContext(), appId, mRtcEventHandler);
+		} catch (Exception e) {
+			throw new RuntimeException("Check the error.");
+		}
+
+
+		mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
+			// Set the client role as AUDIENCE and the latency level as low latency.
+			ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
+			clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+			mRtcEngine.setClientRole(Constants.CLIENT_ROLE_AUDIENCE, clientRoleOptions);
+
+			// Join the channel with a token.
+			mRtcEngine.joinChannel(null, "ak", "", 0);
+		}
+
+	private void connected() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				status.setText("Connected");
+				play_pause.setImageResource(R.drawable.ic_stop_black);
+				play_pause.setEnabled(true);
+			}
+		});
+
+	}
+
+
 	private void _startSlide () {
 
 		img1 = "https://icms-image.slatic.net/images/ims-web/b8bc7369-14cc-41dd-84ea-f53e2855b2d4.jpg_1200x1200.jpg";

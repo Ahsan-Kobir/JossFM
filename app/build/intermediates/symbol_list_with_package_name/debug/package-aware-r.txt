@@ -1356,7 +1356,6 @@ id SHOW_ALL
 id SHOW_PATH
 id SHOW_PROGRESS
 id SYM
-id about
 id aboutIv
 id accelerate
 id accessibility_action_clickable_span
@@ -1562,19 +1561,13 @@ id line1
 id line3
 id linear
 id linear1
-id linear10
-id linear11
 id linear2
 id linear3
 id linear4
 id linear5
 id linear6
-id linear7
-id linear8
-id linear9
 id linearLayout
 id linearLayout2
-id linearm
 id listMode
 id list_item
 id listview1
@@ -1686,9 +1679,7 @@ id startHorizontal
 id startVertical
 id staticLayout
 id staticPostLayout
-id status
 id stop
-id stream_status_icon
 id stretch
 id submenuarrow
 id submit_area
@@ -1738,7 +1729,6 @@ id unchecked
 id uniform
 id unlabeled
 id up
-id upcoming
 id updates
 id useLogo
 id vertical_only
@@ -1830,7 +1820,6 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
 layout events
-layout home
 layout layout_home
 layout main
 layout mtrl_layout_snackbar
